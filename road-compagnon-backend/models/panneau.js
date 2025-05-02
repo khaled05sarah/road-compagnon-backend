@@ -1,14 +1,16 @@
 const mongoose = require('mongoose');
 
 const panneauSchema = new mongoose.Schema({
-    categorie: { type: String, required: true },
+    categorie: { type: String, required: true, enum: ["arret_stop", "interdiction", "temp","indication","danger", "priorite", "obligation"] },
+    explication_generale: { type: String, required: true },
     exemples: [
         {
-            nom: { type: String, required: true },
-            description: { type: String, required: true },
-            image_url: { type: String } // Optionnel pour stocker l'image
+            _id: false,
+            description: { type: String, required: true }
         }
     ]
-});
+}, { timestamps: true });
 
-module.exports = mongoose.model('Panneau', panneauSchema);
+const Panneau = mongoose.model('Panneau', panneauSchema);
+
+module.exports = Panneau;

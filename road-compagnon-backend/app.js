@@ -7,6 +7,7 @@ const cors = require('cors');
 const User = require('./models/User'); // Import du modèle utilisateur
 const panneauxRoutes = require('./routes/panneauxRoutes');
 const  authRoutes=require('./routes/auth');
+const prioriteRoutes = require('./routes/croisementRoutes');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -53,9 +54,10 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: '❌ Une erreur interne est survenue.' });
 });
 
-app.use('/api/panneaux', panneauxRoutes);
+app.use('/api/panneauxRoutes', panneauxRoutes);
+app.use('/api/croisementRoutes', prioriteRoutes);
 
 // ✅ Démarrer le serveur
-app.listen(port, () => {
+app.listen(port,'0.0.0.0',() => {
     console.log(`🚀 Serveur lancé sur http://localhost:${port}`);
 });

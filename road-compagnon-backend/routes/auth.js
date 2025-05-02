@@ -25,37 +25,47 @@ const transporter = nodemailer.createTransport({
 const generateVerificationCode = () => crypto.randomInt(100000, 999999).toString();
 
 // 🔹 Route d'inscription
-router.post('/register', async(req, res) => {
+router.post('/register', async (req, res) => {
     try {
         console.log("📩 Données reçues :", req.body);
 
-        const { firstname, lastname, email, phone, password } = req.body;
+        const { email, password, confirmPassword, phone } = req.body;
 
         // Vérification des champs requis
-        if (!firstname || !lastname || !email || !phone || !password) {
-            console.log("❌ Champs manquants :", { firstname, lastname, email, phone, password });
+        if (!email || !password || !confirmPassword || !phone) {
             return res.status(400).json({ error: "Tous les champs sont obligatoires." });
         }
 
-        // Vérifier si l'utilisateur existe déjà
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
+        // Vérification de la correspondance des mots de passe
+        if (password !== confirmPassword) {
+            return res.status(400).json({ error: "Les mots de passe ne correspondent pas." });
+        }
+
+        // Vérifier si l'email est déjà utilisé
+        const existingUserByEmail = await User.findOne({ email });
+        if (existingUserByEmail) {
             return res.status(400).json({ message: "L'email est déjà utilisé." });
+        }
+
+        // Vérifier si le téléphone est déjà utilisé
+        const existingUserByPhone = await User.findOne({ phone });
+        if (existingUserByPhone) {
+            return res.status(400).json({ message: "Le numéro de téléphone est déjà utilisé." });
         }
 
         // Hash du mot de passe
         const hashedPassword = await bcrypt.hash(password, 10);
         const verificationCode = generateVerificationCode();
 
-        // Création de l'utilisateur
+        // Création de l'utilisateur (avec firstname et lastname vides par défaut)
         const newUser = new User({
-            firstname,
-            lastname,
             email,
-            phone,
             password: hashedPassword,
-            verificationCode, // Stocker le code
-            verified: false, // Par défaut, l'utilisateur n'est pas vérifié
+            verificationCode,
+            verified: false,
+            phone,
+            firstname: "", // Par défaut vide
+            lastname: ""   // Par défaut vide
         });
 
         await newUser.save();
@@ -83,6 +93,7 @@ router.post('/register', async(req, res) => {
         res.status(500).json({ message: "Erreur serveur.", error });
     }
 });
+
 
 // 🔹 Vérification du code reçu par e-mail
 router.post('/verify', async(req, res) => {
@@ -132,12 +143,12 @@ router.post('/login', async(req, res) => {
 
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ message: "Utilisateur non trouvé." });
+            return res.status(400).json({ email: "  عزيزي المستخدم ليس لديك حساب الرجاء التسجيل"});
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({ message: "Mot de passe incorrect." });
+            return res.status(400).json({ password: "كلمه المرور غير صحيحه" });
         }
 
         if (!user.verified) {

@@ -8,248 +8,219 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     .catch(err => console.error("❌ Erreur de connexion :", err));
 
 // 📌 Données complètes des panneaux
-const panneaux = [
-    {
-        categorie: "danger",
-        exemples: [
-            { nom: "Virage à gauche", description: "Virage dangereux à gauche.", image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/France_road_sign_A1b.svg/375px-France_road_sign_A1b.svg.png" },
-            { nom: "Virage à droite", description: "Virage dangereux à droite.", image_url: "https://example.com/danger2.jpg" },
-            { nom: "Succession de virages", description: "Virages successifs.", image_url: "https://example.com/danger3.jpg" },
-            { nom: "Descente dangereuse", description: "Pente importante.", image_url: "https://example.com/danger4.jpg" },
-            { nom: "Montée abrupte", description: "Montée très inclinée.", image_url: "https://example.com/danger5.jpg" },
-            { nom: "Route glissante", description: "Chaussée potentiellement glissante.", image_url: "https://example.com/danger6.jpg" },
-            { nom: "Chaussée rétrécie", description: "Réduction de la largeur de la route.", image_url: "https://example.com/danger7.jpg" },
-            { nom: "Présence de piétons", description: "Zone fréquentée par des piétons.", image_url: "https://example.com/danger8.jpg" },
-            { nom: "Passage d’animaux", description: "Traversée possible d’animaux sauvages.", image_url: "https://example.com/danger9.jpg" },
-            { nom: "Travaux", description: "Chantier en cours sur la route.", image_url: "https://example.com/danger10.jpg" },
-            { nom: "Risque d’éboulement", description: "Chutes de pierres possibles.", image_url: "https://example.com/danger11.jpg" },
-            { nom: "Pont mobile", description: "Présence d’un pont pouvant s’ouvrir.", image_url: "https://example.com/danger12.jpg" },
-            { nom: "Passage à niveau sans barrière", description: "Croisement avec voie ferrée sans protection.", image_url: "https://example.com/danger13.jpg" },
-            { nom: "Feu tricolore", description: "Présence de feux de signalisation.", image_url: "https://example.com/danger14.jpg" },
-            { nom: "Cyclistes", description: "Présence de cyclistes sur la route.", image_url: "https://example.com/danger15.jpg" },
-            { nom: "Vent latéral", description: "Risque de vents violents sur la route.", image_url: "https://example.com/danger16.jpg" },
-            { nom: "Traversée d’enfants", description: "Proximité d’une école.", image_url: "https://example.com/danger17.jpg" },
-            { nom: "Passage de tramway", description: "Intersection avec une voie de tramway.", image_url: "https://example.com/danger18.jpg" },
-            { nom: "Tunnel", description: "Entrée d’un tunnel à venir.", image_url: "https://example.com/danger19.jpg" },
-            { nom: "Carrefour dangereux", description: "Intersection risquée à venir.", image_url: "https://example.com/danger20.jpg" },
-            { nom: "Chute de pierres", description: "Risque de chutes de pierres.", image_url: "https://example.com/danger21.jpg" },
-            { nom: "Passage de cavaliers", description: "Présence de cavaliers sur la route.", image_url: "https://example.com/danger22.jpg" },
-            { nom: "Passage de véhicules lents", description: "Présence de véhicules lents.", image_url: "https://example.com/danger23.jpg" },
-            { nom: "Passage de véhicules agricoles", description: "Présence de véhicules agricoles.", image_url: "https://example.com/danger24.jpg" },
-            { nom: "Passage de véhicules de chantier", description: "Présence de véhicules de chantier.", image_url: "https://example.com/danger25.jpg" }
-        ]
-    },
-    {
-        categorie: "interdiction",
-        exemples: [
-            { nom: "Sens interdit", description: "Interdiction d’entrer dans cette rue.", image_url: "https://example.com/interdiction1.jpg" },
-            { nom: "Interdiction de dépasser", description: "Dépassement interdit.", image_url: "https://example.com/interdiction2.jpg" },
-            { nom: "Interdiction aux poids lourds", description: "Camions interdits.", image_url: "https://example.com/interdiction3.jpg" },
-            { nom: "Interdiction de stationner", description: "Stationnement interdit.", image_url: "https://example.com/interdiction4.jpg" },
-            { nom: "Interdiction de tourner à gauche", description: "Virage à gauche interdit.", image_url: "https://example.com/interdiction5.jpg" },
-            { nom: "Interdiction de tourner à droite", description: "Virage à droite interdit.", image_url: "https://example.com/interdiction6.jpg" },
-            { nom: "Interdiction de klaxonner", description: "Usage du klaxon interdit.", image_url: "https://example.com/interdiction7.jpg" },
-            { nom: "Interdiction aux piétons", description: "Accès interdit aux piétons.", image_url: "https://example.com/interdiction8.jpg" },
-            { nom: "Interdiction de faire demi-tour", description: "Demi-tour interdit.", image_url: "https://example.com/interdiction9.jpg" },
-            { nom: "Limite de poids", description: "Poids maximal autorisé.", image_url: "https://example.com/interdiction10.jpg" },
-            { nom: "Interdiction de circuler", description: "Accès interdit à tous les véhicules.", image_url: "https://example.com/interdiction11.jpg" },
-            { nom: "Interdiction de s’arrêter", description: "Arrêt interdit.", image_url: "https://example.com/interdiction12.jpg" },
-            { nom: "Interdiction de circuler à vélo", description: "Vélos interdits.", image_url: "https://example.com/interdiction13.jpg" },
-            { nom: "Interdiction de circuler à moto", description: "Motos interdites.", image_url: "https://example.com/interdiction14.jpg" },
-            { nom: "Interdiction de circuler à pied", description: "Piétons interdits.", image_url: "https://example.com/interdiction15.jpg" },
-            { nom: "Interdiction de circuler à cheval", description: "Cavaliers interdits.", image_url: "https://example.com/interdiction16.jpg" },
-            { nom: "Interdiction de circuler en tracteur", description: "Tracteurs interdits.", image_url: "https://example.com/interdiction17.jpg" },
-            { nom: "Interdiction de circuler en camionnette", description: "Camionnettes interdites.", image_url: "https://example.com/interdiction18.jpg" },
-            { nom: "Interdiction de circuler en bus", description: "Bus interdits.", image_url: "https://example.com/interdiction19.jpg" },
-            { nom: "Interdiction de circuler en car", description: "Cars interdits.", image_url: "https://example.com/interdiction20.jpg" }
-        ]
-    },
-    {
-        categorie: "obligation",
-        exemples: [
-            { nom: "Direction obligatoire à droite", description: "Vous devez tourner à droite.", image_url: "https://example.com/obligation1.jpg" },
-            { nom: "Direction obligatoire à gauche", description: "Vous devez tourner à gauche.", image_url: "https://example.com/obligation2.jpg" },
-            { nom: "Piste cyclable obligatoire", description: "Les vélos doivent emprunter cette voie.", image_url: "https://example.com/obligation3.jpg" },
-            { nom: "Port du casque obligatoire", description: "Casque obligatoire pour les motards.", image_url: "https://example.com/obligation4.jpg" },
-            { nom: "Port de la ceinture obligatoire", description: "Ceinture de sécurité obligatoire.", image_url: "https://example.com/obligation5.jpg" },
-            { nom: "Vitesse minimale obligatoire", description: "Vitesse minimale à respecter.", image_url: "https://example.com/obligation6.jpg" },
-            { nom: "Passage obligatoire à droite", description: "Vous devez passer à droite.", image_url: "https://example.com/obligation7.jpg" },
-            { nom: "Passage obligatoire à gauche", description: "Vous devez passer à gauche.", image_url: "https://example.com/obligation8.jpg" },
-            { nom: "Passage obligatoire en sens unique", description: "Vous devez circuler dans le sens indiqué.", image_url: "https://example.com/obligation9.jpg" },
-            { nom: "Passage obligatoire en sens giratoire", description: "Vous devez circuler dans le sens giratoire.", image_url: "https://example.com/obligation10.jpg" },
-            { nom: "Passage obligatoire en sens inverse", description: "Vous devez circuler dans le sens inverse.", image_url: "https://example.com/obligation11.jpg" },
-            { nom: "Passage obligatoire en sens unique alterné", description: "Vous devez circuler dans le sens unique alterné.", image_url: "https://example.com/obligation12.jpg" },
-            { nom: "Passage obligatoire en sens unique alterné avec priorité", description: "Vous devez circuler dans le sens unique alterné avec priorité.", image_url: "https://example.com/obligation13.jpg" },
-            { nom: "Passage obligatoire en sens unique alterné sans priorité", description: "Vous devez circuler dans le sens unique alterné sans priorité.", image_url: "https://example.com/obligation14.jpg" },
-            { nom: "Passage obligatoire en sens unique alterné avec priorité à droite", description: "Vous devez circuler dans le sens unique alterné avec priorité à droite.", image_url: "https://example.com/obligation15.jpg" },
-            { nom: "Passage obligatoire en sens unique alterné avec priorité à gauche", description: "Vous devez circuler dans le sens unique alterné avec priorité à gauche.", image_url: "https://example.com/obligation16.jpg" },
-            { nom: "Passage obligatoire en sens unique alterné avec priorité à droite et à gauche", description: "Vous devez circuler dans le sens unique alterné avec priorité à droite et à gauche.", image_url: "https://example.com/obligation17.jpg" },
-            { nom: "Passage obligatoire en sens unique alterné avec priorité à droite et à gauche et en sens inverse", description: "Vous devez circuler dans le sens unique alterné avec priorité à droite et à gauche et en sens inverse.", image_url: "https://example.com/obligation18.jpg" },
-            { nom: "Passage obligatoire en sens unique alterné avec priorité à droite et à gauche et en sens inverse et en sens unique alterné", description: "Vous devez circuler dans le sens unique alterné avec priorité à droite et à gauche et en sens inverse et en sens unique alterné.", image_url: "https://example.com/obligation19.jpg" },
-            { nom: "Passage obligatoire en sens unique alterné avec priorité à droite et à gauche et en sens inverse et en sens unique alterné et en sens unique alterné avec priorité", description: "Vous devez circuler dans le sens unique alterné avec priorité à droite et à gauche et en sens inverse et en sens unique alterné et en sens unique alterné avec priorité.", image_url: "https://example.com/obligation20.jpg" }
-        ]
-    },
-    {
-        categorie: "indication",
-        exemples: [
+const panneaux = 
+    [
         {
-            nom: "Direction",
-            description: "Indication de direction vers une ville ou un lieu.",
-            image_url: "https://example.com/indication1.jpg"
+            "categorie": "arret_stop",
+            "explication_generale": "تحجز أو تنظم هذه العلامات وقوف أو توقف العربات بمكان أو زمان معين , شكلها و لونها:شكلها دائري أما لونها فهو ازرق وهي محاطة و مشطوبة باللون الأحمر",
+            "exemples": [
+                { "description": "ممنوع الوقوف" },
+                { "description": "ممنوع الوقوف و التوقف" },
+                { "description": "ممنوع الوقوف من 1 إلى 15 من الشهر" },
+                { "description": "ممنوع الوقوف من 1 إلى 31 من الشهر" },
+                { "description": "دخول إلى منطقة يمنع فيها الوقوف" },
+                { "description": "دخول إلى منطقة يكون الوقوف فيها بالتداول كل نصف شهر من جهة ولمدة محددة" },
+                { "description": "دخول إلى منطقة وقوف بمقابل" },
+                { "description": "  خروج منطقة وقوف بمقابل" },
+                { "description": "دخول إلى منطقة وقوف محدد بوقت ومراقب باسطوانة" },
+                { "description": "ممنوع الوقوف إلى غاية العلامة" },
+                { "description": "ممنوع الوقوف على يسار غاية العلامة" },
+                { "description": "ممنوع الوقوف ابتداء من العلامة" },
+                { "description": "ممنوع الوقوف قبل و بعد العلامة" }
+            ]
         },
         {
-            nom: "Distance",
-            description: "Indication de distance en kilomètres.",
-            image_url: "https://example.com/indication2.jpg"
+            "categorie": "interdiction",
+        
+                "explication_generale": "هي عالمات تنظيمية تحمل تعليمات محددة لمستعملي الطريق يلتزمون بها لتجنب اختلال حركة المرور\n, تعني هذه االعلامات المنع إذا كانت محاطة باللون الأحمر\n,شكلها و لونها : شكلها دائري و لونها أبيض و هي محاطة باللون الأزرق الداكن أو اللون الأسود\n, موضعها : توضع هذه العلامات بصفة عامة ماشرة على جانبي الرصيف أو على الحاشية الترابية قرب مكان المنع\n, يبدأ مفعولها عند العلامة و ينتهي عند المفترق القادم لذلك يجب إعادة تثبيتها بعد كل تقاطع طرقات\n. عند الدخول إلى مواطن العمران, يقطع إعلام مستعملي الطريق بمنع الجولان بواسطة علامات مثبتة بعد علامة الدخول إلى مواطن العمران\n. ولا يطبق المنع إلا على الطريق الذي تم عليه تثبيت علامة المنع\n, علامات نهاية المنع : يكون أيضا شكلها دائري ولونها أبيض إلا أنها مشطوبة بخط أسود",
+                "exemples": [
+                    { "description": "نهاية جميع الموانع المعلنة سابقا والملزمة للعربات التي هي في حالة سير. نهاية هذه الموانع تشمل كل العربات المتحركة" },
+                    { "description": "نهاية منع مجاوزة كل العربات ذات محرك باستثناء تلك التي لها عجلتين و بدون عربة جانبية" },
+                    { "description": "نهاية منع المجاوزة بالنسبة لعربات نقل البضائع و التي يفوق وزنها الجملي المرخص 3500 كغ " },
+                    { "description": " موانع أخرى يقع التنصيص عليها بكتابة على العلامة" },
+                    { "description": "يمنع تجاوز السرعة المبينة بالعلامة" },
+                    { "description": "ممنوع الجولان على العربات الناقلة لمواد خطرة" },
+                    { "description": "ممنوع الجولان على العربات الناقلة لكمية معينة يمكنها تلويث المياه" },
+                    { "description": "ممنوع الجولان على العربات الناقلة لكمية معينة من مواد متفجرة أو سريعة الالتهاب" },
+                    { "description": "ممنوع استعمال المنبهات الصوتية" },
+                    { "description": "يمنع الجولان دون  ترك مسافة بين العربات لا تقل عن المسافة المبينة بالعلامة" },
+                    { "description": "ممنوع الجولان على العربات التي يفوق وزنها على المغزل الواحد 2500 كغ" },
+                    { "description": "ممنوع الجولان في الاتجاهين" },
+                    { "description": "ممنوع الجولان على العربات التي يفوق علوها باعتبار الحمولة العلو المبين بالعلامة" },
+                    { "description": "ممنوع الجولان على العربات التي يفوق عرضها باعتبار الحمولة العرض المبين بالعلامة"}, 
+                    { "description": "ممنوع الجولان على العربات و العربات المركبة التي يفوق طولها باعتبار الحمولة الطول المبين بالعلامة" },
+                    { "description": "ممنوع المرور على الدراجات النارية الصغيرة" },
+                    { "description": "ممنوع الجولان على العربات والمعدات الفلاحية ذات  المحرك" },
+                    { "description": "ممنوع الجولان على العربات المجرورة بحيوان" },
+                    { "description": "ممنوع الجولان على الدراجات المجرورة باليد " },
+                    { "description": "ممنوع الجولان على المترجلين" },
+                    { "description": "ممنوع الجولان على عربات نقل البضائع" },
+                    { "description": "ممنوع الجولان على العربات ذات  المحرك" },
+                    { "description": "ممنوع المرور دون  توقف (شرطة)" },
+                    { "description": "ممنوع المرور دون  توقف (ديوانة)" },
+                    { "description": "ممنوع على العربات المعدة لنقل البضائع التي يفوق وزنها الجملي المرخص فيه 23500 كغ أن تتجاوز العربات ذات محرك باستثناء العربات ذات  العجلتين غير المجهزة بعربة جانبية" },
+                    { "description": " ممنوع مجاوزة كل  العربات ذات محرك باستثناء العربات ذات  العجلتين غير المجهزة بعربة جانبية" },
+                    { "description": "فسح مجال المرور للعربات القادمة من الاتجاه المعاكس" },
+                    { "description": "ممنوع الجوع على الأعقاب بالطريق المتبع إلى غاية المفترق القادم" },
+                    { "description": "ممنوع الدوران على اليمين في المفترق القادم" },
+                    { "description": "ممنوع الدوران على اليسار في المفترق القادم" },
+                    { "description": "اتجاه ممنوع على كل العربات" },
+                    { "description": "نهاية منع إستعمال المنبهات الصوتية" },
+                    { "description": "نهاية تحديد السرعة" }
+            ]
         },
         {
-            nom: "Parking",
-            description: "Indication d'un parking à proximité.",
-            image_url: "https://example.com/indication3.jpg"
+            "categorie": "danger",
+          "explication_generale": "تهدف إشارات وعلامات الخطر إلى تنبيه مستعملي الطريق إلى الأماكن التي يجب عليهم الإنتباه بها بسبب وجود عوائق خطرة,\nوتفرض عليهم تخفيضا من السرعة ملائماً لنوع الخطر المشار إليه.\n\nشكلها و لونها :\nمثلث متساوي الأضلاع، قاعدته أفقية، أما لونها أبيض وهي محاطة بخط أحمر، ويكون الرمز باللون الأسود.\n\nموضعها :\n~ خارج مواطن العمران :\nتوضع علامات الخطر قبل حوالي 150 مترا من بداية المنطقة المعنية بالخطر.\n\n~ داخل مواطن العمران :\nتوضع هذه العلامات على بعد 50 مترا أو أقل من المنطقة المعنية بالخطر.\n\nيمكن وضع هذه العلامات على مسافات أقل من المسافات المذكورة أعلاه،\nوفي هذه الحالة تبين المسافة التقريبية بين العلامة والمكان الخطير بلافتة تكميلية.",
+
+
+            "exemples": [
+                { "description": "مرور حيوانات وحشية" },
+                { "description": "مرور حيوانات أهلية" },
+                { "description": "منعرج على اليمين " },
+                { "description": "منعرج على اليسار" },
+                { "description": "منعرجات متتالية أولها على اليسار" },
+                { "description": "طريق مسنم" },
+                { "description": "مخفض للسرعة" },
+                { "description": "طريق ضيق من اليسار" },
+                { "description":  "طريق ضيق من اليمين "},
+                { "description": "طريق ضيق من الجهتين" },
+                { "description": "طريق منزلق" },
+                { "description": "جسر متحرك" },
+                { "description": "طريق تنتهي إلى رصيف أو حافة نهر" },
+                { "description": "الإعلان عن إشارة ضوئية تنظم الجولان" },
+                { "description": "خطر مجهول" },
+                { "description": "ريتح جانبية" },
+                { "description": "جولان في الإتجاهين" },
+                { "description": "خطر سقوط حجارة" },
+                { "description": "منحدر خطير" },
+                { "description": "عبور منطقة بها خطر طيران" },
+                { "description": "تقاطع طريق مع سكة حديدية غير محروسة" },
+                { "description":  "تقاطغ طريق مع سكة حديدية محروسة" },
+                { "description": "مكان يكثر فيه الأطفال" },
+                { "description": "مفترق طرقات دوراني" },
+                { "description": " تقاطع طريق مع سكة حديديةمحروسة و مجهزة بأسلاك كهربائية" },
+                { "description": "علامة مباشرة تعلن عن مكان تقاطع الطريق مع السكة الحديدية. إذا كانت علامة قاطع ومقطوع مكررة فهذا يعني أن تقاطع الطريق مع السكة الحديدية به مسلكين أو أكثر. يمكن أن تكون هذه العلامة مصحوبة بإشارات أوتوماتيكية ضوئية وبجرس يبدأ في العمل 20 ثانية قبل مرور القطار." },
+                { "description":  "الاقتراب من تقاطع طريق مع سكة حديدية معلن عنه بهذه الركائز. كل خط أحمر مدهون على الركيزة يبعد 50 متر تقريباً عن مقطع السكة الحديدية." },
+                { "description": "ممر للمرتجلين" },
+                { "description": "خروج دراجات " },
+                { "description": "مرور حيوانات مركوبة" }
+                
+            ]
         },
         {
-            nom: "Hôpital",
-            description: "Indication de la direction vers un hôpital.",
-            image_url: "https://example.com/indication4.jpg"
+            "categorie":"priorite",
+             "explication_generale": "تنظيم هذه العلامات السير بالمفترقات و تبين أولويات المرور لضمان سهولة حركة الجولان\n,شكلها و لونها : لها أشكال متعددة لجلب انتباه مستعملي الطريق\n, موضعها : توضع هذه العلامات قرب المفترقات على اليمين و يمكن أن تعاد من أعلى أو يسار المعبد\nيمكن أن تكمل علامات الأولوية بلافتة لرسم السبيل الذي يتمتع فيه السواق بأولوية المرور بالمفتقد القادم",
+              "exemples": [
+                { "description": "نهاية طريق ذات  أولوية" },
+                { "description": "طريق ذات  أولوية. تطبق فيه الأولوية بكل المفترقات" },
+                { "description": "افسح المجال في المفترق. تكمل هذه العلامة عادة بخط عرضي متقطع " },
+                { "description":" إعلان عن علامة 'قف 'على المسافة التقريبية المبينة" },
+                { "description": "توقف عند حد المعبد الذي ستقترب منه مع فسح المجال للعربات القادمة من اليمين و اليسار. توضع هذه العلامة على عين المكان و تكمل بخط عرضي أبيض عند الإقتضاء" },
+                { "description": "مفترق مع طريق يجب على مستعمليه ترك الأولوية. لكن لا يقع تطبيق الأولوية إلا بالمفترق القادم" },
+                { "description": " مفترق طرقات دوراني يكمل في أغلب الأحيان بلافتة ليس لديك الأولوية و هذه علامة متقدمة تقع الإشارة إليها على عين المكان بعلامة فسح المجال " },
+
+                { "description": "تمثل هذه العلامة ركيزة مفترق تهدف إلى الإشارة إلى مكان المفترق لكنها لا تقدم معلومات عن نظام الأولوية المزمع تطبيقه" },
+                { "description": "طريق ذات  أولوية. تمثل اللافتة رسما للمفترق القادم مع الإشارة بواسطة خط سميك لفروع المفترق التي تتمتع بالأولوية" }
+            ]
         },
         {
-            nom: "Station-service",
-            description: "Indication d'une station-service à proximité.",
-            image_url: "https://example.com/indication5.jpg"
+            "categorie": "obligation",
+            
+                "explication_generale": "هي علامات تنظيميه تجبر مستعملي الطريق على اتباع الاشارات التي تحملها\n,شكلها و لونها : شكلها دائري ولونها ازرق اما نوعيه الجبر فتكون باللون الأبيض\n, موضعها : توضع هذه العلامات بصوره عامه مباشره قرب المكان الذي يبدا فيه الالتزام. ويجب اعاده وضعها بعد كل تقاطع طرقات.\nغير ان بعض العلامات توضع قبل المكان الذي يطبق فيه الالتزام الذي يشير اليه وذلك على مسافه كافيه حسب وضعيه هذا المكان أما علامات نهايه الجبر فيكون شكلها دائري وتكون محاطه باللون الابيض الا انها مشطوبه باللون الاحمر",
+              
+              "exemples": 
+              [
+
+                { "description": "مسلك خاص بعربات الخدمات المنتظمة للنقل الجماعي" },
+                { "description": "ادنى سرعه اجباريه" },
+                { "description": "سبيل اجباري لركوب الخيل" },
+                { "description": "سبيل اجباري للمترجلين" },
+                { "description": "مسلك او سبيل اجباري للدراجات الهوائية بدون عربة جانبيه او مجروره"}, 
+                { "description": "استعمال سلاسل الثلج اجباري" },
+                { "description": "اشعال أضواء السيارة اجباري" },
+                { "description": "التفاف دوراني اجباري" },
+                { "description": "اتجاه الى الامام او اليسار اجباري في المفترق القادم" },
+                { "description": "اتجاه الى اليسار اجباري في المفترق القادم" },
+               { "description": "اتجاه الى اليمين اجباري في المفترق القادم" },
+               { "description": "اتجاه الى الامام اجباري في المفترق القادم" },
+               { "description": "حاجز يجب الإحاطة به من اليسار " },
+               { "description": "حاجز يجب الإحاطة به من اليمين" },
+               { "description": "الدوران الى اليسار اجباري قبل العلامة" },
+               { "description": "الدوران الى اليمين اجباري قبل العلامة" },
+               { "description": "اتجاه الى اليمين او اليسار اجباري في المفترق القادم" },
+               { "description": "اتجاه الى الامام او اليمين اجباري في المفترق القادم" },
+               { "description": "نهاية الرواق الخاص بالدراجات الهوائية" },
+               { "description": "نهاية الرواق الاجباري على الراجلين" },
+                { "description": " نهاية الرواق الاجباري على الخيالة" },
+                 { "description": "نهاية السرعة الادنى الإجبارية" },
+                 { "description": "نهاية الاستعمال الاجباري للسلاسل الثلج" },
+                 { "description": "نهاية المسلك الاجباري للحافلات" }
+            ]
         },
         {
-            nom: "Aire de repos",
-            description: "Indication d'une aire de repos sur l'autoroute.",
-            image_url: "https://example.com/indication6.jpg"
+            "categorie": "indication",
+            "explication_generale":  "تهدف علامات الإرشاد إلى توجيه مستعملي الطريق وتمكينهم من الحصول على المعلومات الضرورية أثناء السياقة لتسهيل تنقلهم وضمان سلامتهم\n, شكلها ولونها : تأخذ شكلاً مستطيلاً أو مربعاً ولونها يكون أزرق مع رموز أو كتابات باللون الأبيض\n, موضعها : توضع هذه العلامات على جانب الطريق أو فوقه، حسب نوع المعلومات التي تقدمها، لضمان رؤيتها بوضوح من قبل السائقين",
+            "exemples": [
+                { "description": "سرعه منصوح بها" },
+                { "description": "نهايه السرعه منصوح بها" },
+                { "description": "حظيره السيارات" },
+                { "description": "موقف خاص للمقطورات" },
+                { "description": "حظيره سيارات بالدفع"}, 
+                { "description": "حظيره خاصه بحافلات النقل العمومي" },
+                { "description": "مستشفى" },
+                { "description": "طريق بدون منفذ" },
+                { "description": "لي اولويه السير على الاتجاه المعاكس" },
+                { "description": "توزيع المسالك" },
+               { "description": "تخفيض المسالك" },
+               { "description": "ممهل" },
+               { "description": "مسلك للنجده" },
+               { "description": "ممر جبلي مغلق" },
+               { "description": "التوقف مسموح على الرصيف" },
+               { "description": "نهايه الطريق الخاص بالسيارات" },
+               { "description": "موقف سيارات الاجره" },
+               { "description": "موقف خاص بالحافلات" },
+               { "description": "موقف الترامواي" },
+               { "description": "طريق في اتجاه واحد" },
+                         { "description": " ممر الراجلين" },
+                         { "description": "طريق خاص بالسيارات" },
+                         { "description": "مركز اسعاف" },
+                         { "description": "مكان للاستراحه" },
+                          { "description": "خاص بالمعوقين حركيا" },
+                          { "description": "منزل شباب" },
+                          { "description": "غابه سريعه الالتهاب" },
+                          { "description": "هاتف عمومي" },
+                          { "description": "تصليح العجلات" },
+                          { "description": "مكان شحن السيارات" },
+                          { "description": "مقهى" },
+                          { "description": "مطعم" },
+                          { "description": "محطه الوقود" },
+                         { "description": "هاتف النجده" },
+                         { "description": "مركز استعلام سياحي" }
+            ]
         },
         {
-            nom: "Sortie d'autoroute",
-            description: "Indication d'une sortie d'autoroute.",
-            image_url: "https://example.com/indication7.jpg"
-        },
-        {
-            nom: "Zone piétonne",
-            description: "Indication d'une zone réservée aux piétons.",
-            image_url: "https://example.com/indication8.jpg"
-        },
-        {
-            nom: "Limite de vitesse recommandée",
-            description: "Indication d'une vitesse recommandée.",
-            image_url: "https://example.com/indication9.jpg"
-        },
-        {
-            nom: "Fin de voie",
-            description: "Indication de la fin d'une voie de circulation.",
-            image_url: "https://example.com/indication10.jpg"
+            "categorie":"temp",
+        
+                "explication_generale": "لعلامات الوقيه مستعملي الطريق وترشدهم لوجود الحواجز او اخطار او اشغال وقتيه يمكن ان تعترضهم وذلك لحمايتهم وحمايه العاملين بها وتسحب هذه العلامات بزوال سبب وضعها\n,شكلها : تأخذ العلامات الوقتيه جميع اشكال العلامات الاخرى حسب مدلولها\n, موضعها : توضع هذه العلامات على مسافه 150 م او اقل او مباشره على عين المكان حسب نوعيه الخطر",
+        
+              
+            "exemples": [
+                { "description": "طريق ضيق" },
+                { "description": "مقذوفات حصى" },
+                { "description": "طريق مسنم " },
+                { "description": " إعلان عن علامة قف على المسافة التقريبية المبينة" },
+                { "description": "اوتاد متحركة تسمح او تمنع المرور" },
+                { "description": "علامه موضعيه تشير الى تغيير الاتجاه او الى تقلص عرض المعبد" },
+                { "description": " مخروط اشغال يشير الى حدود حواجز وقتيه" },
+                { "description": "اعلان عن اشاره ضوئية مؤقته تنظم الجولان" },
+                { "description": "أخطار مؤقته أخرى يمكن ان تقرن العلامة بلافته تشير الى نوع الخطر" },
+                { "description": "أشغال مؤقته " },
+                { "description": "طريق زلق مؤقتا " }
+            ]
         }
-        ]
-    },
-    {   categorie: "divers",
-        exemples:[
-         
-        {
-            nom: "Barrière de péage",
-            description: "Barrière pour le paiement du péage sur une autoroute.",
-            image_url: "https://example.com/divers1.jpg"
-        },
-        {
-            nom: "Barrière de passage à niveau",
-            description: "Barrière automatique pour les passages à niveau.",
-            image_url: "https://example.com/divers2.jpg"
-        },
-        {
-            nom: "Panneau de fin de limitation de vitesse",
-            description: "Indique la fin d'une limitation de vitesse.",
-            image_url: "https://example.com/divers3.jpg"
-        },
-        {
-            nom: "Panneau de fin d'interdiction de dépasser",
-            description: "Indique la fin d'une interdiction de dépasser.",
-            image_url: "https://example.com/divers4.jpg"
-        },
-        {
-            nom: "Panneau de fin de zone",
-            description: "Indique la fin d'une zone réglementée (ex : zone 30).",
-            image_url: "https://example.com/divers5.jpg"
-        },
-        {
-            nom: "Panneau de priorité ponctuelle",
-            description: "Indique une priorité ponctuelle (ex : priorité à droite).",
-            image_url: "https://example.com/divers6.jpg"
-        },
-        {
-            nom: "Panneau de signalisation temporaire",
-            description: "Panneau utilisé pour les travaux ou les événements temporaires.",
-            image_url: "https://example.com/divers7.jpg"
-        },
-        {
-            nom: "Barrière de contrôle d'accès",
-            description: "Barrière utilisée pour contrôler l'accès à une zone.",
-            image_url: "https://example.com/divers8.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de voie réservée",
-            description: "Indique une voie réservée (ex : bus, véhicules d'urgence).",
-            image_url: "https://example.com/divers9.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de zone scolaire",
-            description: "Indique une zone scolaire avec des règles spécifiques.",
-            image_url: "https://example.com/divers10.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de zone industrielle",
-            description: "Indique une zone industrielle avec des règles spécifiques.",
-            image_url: "https://example.com/divers11.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de zone touristique",
-            description: "Indique une zone touristique avec des règles spécifiques.",
-            image_url: "https://example.com/divers12.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de zone résidentielle",
-            description: "Indique une zone résidentielle avec des règles spécifiques.",
-            image_url: "https://example.com/divers13.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de zone de rencontre",
-            description: "Indique une zone de rencontre où piétons et véhicules partagent la voie.",
-            image_url: "https://example.com/divers14.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de zone de livraison",
-            description: "Indique une zone réservée aux livraisons.",
-            image_url: "https://example.com/divers15.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de zone de stationnement",
-            description: "Indique une zone de stationnement spécifique.",
-            image_url: "https://example.com/divers16.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de zone de chantier",
-            description: "Indique une zone de chantier avec des règles spécifiques.",
-            image_url: "https://example.com/divers17.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de zone de danger",
-            description: "Indique une zone de danger avec des règles spécifiques.",
-            image_url: "https://example.com/divers18.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de zone de secours",
-            description: "Indique une zone de secours avec des règles spécifiques.",
-            image_url: "https://example.com/divers19.jpg"
-        },
-        {
-            nom: "Panneau de signalisation de zone de déviation",
-            description: "Indique une zone de déviation avec des règles spécifiques.",
-            image_url: "https://example.com/divers20.jpg"
-        }
-    ]
-   }
-];
+    
+]
 
 Panneau.insertMany(panneaux)
     .then(() => {
