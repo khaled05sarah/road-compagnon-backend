@@ -3,14 +3,14 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/emp_type/User');
-const Mechanic = require('../../models/emp_type/mechanic');
+const Mechanic = require('../../models/emp_type/Mechanic');
 const Towing = require('../../models/emp_type/Towing');
 const Vendor = require('../../models/emp_type/Vendor');
 const Admin = require('../../models/emp_type/Admin');
 const upload = require("../../upload"); // Importer multer
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const mechanic = require('../../models/emp_type/mechanic');
+const mechanic = require('../../models/emp_type/Mechanic');
 require('dotenv').config();
 
 router.use(express.json());
